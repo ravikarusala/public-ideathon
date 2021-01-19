@@ -1,0 +1,76 @@
+extends ../layout
+block content
+
+    div.row
+        div.col-xs-4
+            include ../partials/event-left
+
+        div.col-xs-8
+            div.row.hack-background
+                h3.div.col-xs-10.hack-title= event.title
+                if joined === true || (user && user.judge === true)
+                    div.col-xs-2.float-right
+                        a.create-hack(href='edit/' + id)
+                            i.fa.fa-pencil-square-o  Edit
+
+                div.col-xs-12.pre.hack-description= event.shortDescription
+                div.col-xs-12.pre.hack-description!= md(event.description)
+
+                div.col.xs-9.col-sm-9.col-md-9.col-lg-9
+                    img.img-responsive(src=event.pictureURL ? '/image/' + event.pictureURL : '/image/default-hack-image.png', width='100%', height='100%')
+
+                div.col-xs-12.col-sm-12.col-md-3.col-lg-3
+                    div.row
+                        //- div.col-xs-12.hack-labels
+                        //-     span
+                        //-         i.fa.fa-location-arrow
+                        //-     span= event.location
+                        //- div.col-xs-12.hack-labels
+                        //-     span
+                        //-         i.fa.fa-cube
+                        //-     span= category
+                        div.col-xs-12.hack-labels
+                            span
+                                if event.open
+                                    i.fa.fa-check-circle
+                                    span Open to join
+                                else
+                                    i.fa.fa-minus-circle
+                                    span Not open for registration
+                        //- div.col-xs-12.hack-labels.float-right
+                        //-     span
+                        //-         if event.science
+                        //-             i.fa.fa-check-circle
+                        //-         else
+                        //-             i.fa.fa-minus-circle
+                        //-     span Science Project
+                        div.col-xs-12.hack-labels.float-right
+                            span
+                                i.fa.fa-calendar-check-o
+                            span= seasonLookup[event.season]
+                        //- if event.nominated === true
+                        //-     div.col-xs-12.hack-labels.float-right
+                        //-         span
+                        //-             i.fa.fa-star
+                        //-         span Nominated
+
+            for comment in comments
+                div.row.row-bottom-padding.comment-content
+                    if comment.authorPicture
+                        img.participant-avatar(src='#{comment.authorPicture}')
+                    else
+                        img.participant-avatar(src='http://www.gravatar.com/avatar/3b3be63a4c2a439b013787725dfce802?d=identicon')
+                    span.participant-heading= comment.authorName
+                    span= ' says:'
+                    div= comment.comment
+
+            form(role='form' method='post' action='/events/comment')
+                .form-group
+                    input(type='hidden', name='_csrf', value=_csrf)
+                .form-group
+                    input(type='hidden' name='event', value= id)
+                .form-group
+                    label(for='comment') Comment:
+                    textarea#comment.form-control(type='text' name='comment' rows=6 required='' oninvalid="this.setCustomValidity('Comment Field cannot be blank')" oninput="this.setCustomValidity('')")
+
+                button.btn.btn-default(type='submit') Submit
