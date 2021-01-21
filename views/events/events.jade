@@ -1,6 +1,18 @@
 
 div.row
-    div.hacks-count= events.length + " Hacks"
+    span.hacks-count= events.length + " Hacks"
+    span.btn-group.pull-right
+            button.btn.btn-info(type='button') Sort By
+            button.btn.btn-info.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+                span.caret
+                span.sr-only Toggle Dropdown
+            ul.dropdown-menu
+                li
+                    a(href='#' onclick='sortFunction(0); return false;') Date Created
+                li
+                    a(href='#' onclick='sortFunction(1); return false;') Participants
+                li
+                    a(href='#' onclick='sortFunction(2); return false;') Comments
 
 for event in events
     div.row.row-bottom-padding

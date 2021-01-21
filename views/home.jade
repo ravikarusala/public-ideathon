@@ -1,0 +1,133 @@
+extends layout
+h3 Search Event
+block content
+    //- div.row.row-bottom-padding
+    //-     div.col-xs-12.hack-background
+    //-         div.col-xs-12
+    //-             img.img-responsive(src='/image/image1.png')
+    div.row.row-bottom-padding
+      #myCarousel.carousel.slide(data-ride='carousel')
+        // Indicators
+        ol.carousel-indicators
+          li.active(data-target='#myCarousel' data-slide-to='0')
+          li(data-target='#myCarousel' data-slide-to='1')
+        // Wrapper for slides
+        .carousel-inner
+          .item.active
+            img(src='/image/NewTimeline.png' alt='Los Angeles' style='width:100%;')
+          .item
+            img(src='/image/Picture6.png' alt='Chicago' style='width:100%;')
+        //- // Left and right controls
+        //- a.left.carousel-control(href='#myCarousel' data-slide='prev')
+        //-   span.fa.fa-chevron-left
+        //-   span.sr-only Previous
+        //- a.right.carousel-control(href='#myCarousel' data-slide='next')
+        //-   span.fa.fa-chevron-right
+        //-   span.sr-only Next
+      //- div.col-xs-12
+      //-   #myCarousel.carousel.slide(data-ride='carousel')
+      //-     // Indicators
+      //-     ol.carousel-indicators
+      //-       li.active(data-target='#myCarousel' data-slide-to='0')
+      //-       li(data-target='#myCarousel' data-slide-to='1')
+      //-     // Wrapper for slides
+      //-     .carousel-inner
+      //-       .item.active
+      //-         img(src='/image/image1.png' alt='Los Angeles' style='width:100%;')
+      //-       .item
+      //-         img(src='/image/image1.png' alt='Chicago' style='width:100%;')
+      //-       //- .item
+      //-       //-   img(src='ny.jpg' alt='New York' style='width:100%;')
+      //-       //-   .carousel-caption
+      //-       //-     h3 New York
+      //-       //-     p We love the Big Apple!
+      //-     // Left and right controls
+      //-     a.left.carousel-control(href='#myCarousel' data-slide='prev')
+      //-       span.fa.fa-chevron-left
+      //-       span.sr-only Previous
+      //-     a.right.carousel-control(href='#myCarousel' data-slide='next')
+      //-       span.fa.fa-chevron-right
+      //-       span.sr-only Next
+    //- div.row
+    //-   #myCarousel.carousel.slide(data-ride='carousel')
+    //-     // Indicators
+    //-     ol.carousel-indicators
+    //-       li.active(data-target='#myCarousel' data-slide-to='0')
+    //-       li(data-target='#myCarousel' data-slide-to='1')
+    //-       li(data-target='#myCarousel' data-slide-to='2')
+    //-     // Wrapper for slides
+    //-     .carousel-inner
+    //-       .item.active
+    //-         img(src='/image/Focus.jpg' alt='Los Angeles' style='width:100%;')
+    //-       .item
+    //-         img(src='/image/Winners.jpg' alt='Chicago' style='width:100%;')
+    //-       .item
+    //-         img(src='/image/Users.jpg' alt='New york' style='width:100%;')
+    //-     // Left and right controls
+    //-     a.left.carousel-control(href='#myCarousel' data-slide='prev')
+    //-       span.glyphicon.glyphicon-chevron-left
+    //-       span.sr-only Previous
+    //-     a.right.carousel-control(href='#myCarousel' data-slide='next')
+    //-       span.glyphicon.glyphicon-chevron-right
+    //-       span.sr-only Next
+
+    //- .row.text-center.row-bottom-padding
+    //-   .col-md-4.col-sm-6.col-xs-12
+    //-     //- h2.my-5.h2 Guidelines
+    //-     img(src='/image/gn.jpg' alt='Avatar' style='border-radius:50%')
+    //-     //- img.rounded-circle(alt='100x100' src='https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg' data-holder-rendered='true')
+    //-   .col-md-4.col-sm-6.col-xs-12
+    //-     //- h2.my-5.h2 Winners Speak
+    //-     img(src='/image/wsp.jpg' alt='Avatar' style='border-radius:50%')
+    //-     //- img.rounded-circle.z-depth-2(alt='100x100' src='https://mdbootstrap.com/img/Photos/Avatars/img%20(31).jpg' data-holder-rendered='true')
+    //-   .col-md-4.col-sm-6.col-xs-12
+    //-     //- h2.my-5.h2 Users
+    //-     img(src='https://mdbootstrap.com/img/Photos/Avatars/img%20(32).jpg' alt='Avatar' style='border-radius:50%')
+        //- img.rounded-circle(alt='100x100' src='https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg' data-holder-rendered='true')
+    
+    //- .row
+    //-   .col-md-4.col-sm-6.col-xs-12.text-center
+    //-     .circle Hello I am A Circle
+
+    //-   .col-md-4.col-sm-6.col-xs-12.text-center
+    //-     .circle Hello I am A Circle
+
+    //-   .col-md-4.col-sm-6.col-xs-12.text-center
+    //-     .circle Hello I am A Circle
+
+    //- .row.row-bottom-padding
+    //-   .col-md-4.col-sm-6.col-xs-12.text-center
+    //-     a.btn.btn-danger.btn-lg(href='#' role='button')
+    //-       span.fa.fa-lightbulb-o
+    //-       br
+    //-       | Categories  
+    //-   .col-md-4.col-sm-6.col-xs-12.text-center
+    //-     a.btn.btn-warning.btn-lg(href='#' role='button')
+    //-       span.fa.fa-trophy
+    //-       br
+    //-       | Winners Speak
+    //-   .col-md-4.col-sm-6.col-xs-12.text-center
+    //-     a.btn.btn-success.btn-lg(href='#' role='button')
+    //-       span.fa.fa-users
+    //-       br
+    //-       | Users
+
+    //- div.row
+    //- .col-md-4.col-sm-6.col-xs-12
+    //-   .panel.panel-danger
+    //-     .panel-heading Panel Heading
+    //-     .panel-body We are a fairly small, flexible design studio that designs for print and web. We work flexibly with clients to fulfil their design needs. Whether you need to create a brand from scratch, including marketing materials and a beautiful and functional website or whether you are looking for a design refresh we are confident you will be pleased with the results.
+    //- .col-md-4.col-sm-6.col-xs-12
+    //-   .panel.panel-primary
+    //-     .panel-heading Panel Heading
+    //-     .panel-body We are a fairly small, flexible design studio that designs for print and web. We work flexibly with clients to fulfil their design needs. Whether you need to create a brand from scratch, including marketing materials and a beautiful and functional website or whether you are looking for a design refresh we are confident you will be pleased with the results.
+    //- .col-md-4.col-sm-6.col-xs-12
+    //-   .panel.panel-success
+    //-     .panel-heading Panel Heading
+    //-     .panel-body We are a fairly small, flexible design studio that designs for print and web. We work flexibly with clients to fulfil their design needs. Whether you need to create a brand from scratch, including marketing materials and a beautiful and functional website or whether you are looking for a design refresh we are confident you will be pleased with the results.
+    
+    div.row
+        div.col-xs-3
+          include partials/event-search
+        div.col-xs-9
+          include events/events
