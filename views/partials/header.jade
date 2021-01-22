@@ -7,7 +7,7 @@
         span.icon-bar
         span.icon-bar
       a.navbar-brand(href='/')
-        i.fa.fa-cube
+        i.fa.fa-cogs
         | Ideathon
     .collapse.navbar-collapse
       ul.nav.navbar-nav
@@ -15,16 +15,12 @@
           a(href='/') Home
         li(class=title == 'Rules' ? 'active' : undefined)
           a(href='/rules') Guidelines
-        //- li(class=title == 'Categories' ? 'active' : undefined)
-        //-   a(href='/categories') Categories
         li(class=title == 'Prizes' ? 'active' : undefined)
           a(href='/prizes') Winners Speak
-        //- li(class=title == 'Contact Us' ? 'active' : undefined)
-        //-   a(href='/contactus') Contact Us
+        li(class=title == 'Mentors' ? 'active' : undefined)
+          a(href='/mentors') Mentors
         li(class=title == 'Contact Us' ? 'active' : undefined)
-          a(href='/contactus') Contact Us
-        //- li(class=title == 'beautifier' ? 'active' : undefined)
-        //-   a(href='/beautifier') Beautifier
+          a(href='/contact') Contact Us
       ul.nav.navbar-nav.navbar-right
         li(class=title== 'Create' ? 'active' : undefined)
             a(href='/events/create')
@@ -35,15 +31,9 @@
           li(class=title=='Create Account'?'active':undefined)
             a(href='/signup') Register
         else
-          //- li(class=title== 'Create' ? 'active' : undefined)
-          //-   a(href='/events/create')
-          //-     div.create-hack Create Hack
           li.dropdown(class=title=='Account Management'?'active':undefined)
             a.dropdown-toggle(href='#', data-toggle='dropdown')
-              if user.profile.picture
-                img(src='#{user.profile.picture}')
-              else
-                img(src='#{user.gravatar(60)}')
+              +profile-picture(user)
               | #{user.profile.name || user.email || user.id}&nbsp;
               i.caret
             ul.dropdown-menu

@@ -76,7 +76,11 @@ exports.getSignup = function(req, res) {
  * Create a new local account.
  */
 exports.postSignup = function(req, res, next) {
+  req.assert('name', 'Name cannot be blank').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
+  req.assert('email', 'Must use company email').custom(email => {
+    return email.endsWith('sumtotalsystems.com') || email.endsWith('skillsoft.com');
+  });
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
@@ -97,6 +101,7 @@ exports.postSignup = function(req, res, next) {
       req.flash('errors', { msg: 'Account with that email address already exists.' });
       return res.redirect('/signup');
     }
+    user.profile.name = req.body.name;
     User.count({judge: 'true'}, function(err, count) {
       console.log("count = " + count);
       if (count === 0) {
@@ -173,20 +178,47 @@ exports.getJudging = function(req, res, next) {
   });
 };
 
+exports.getMentors = function(req, res, next) {
+  User.find(function(err, users) {
+    const mentors = users.filter(user => user.profile.mentor === true);
+    res.render('mentors', { mentors });
+  });
+};
 
 /**
  * POST /account/profile
  * Update profile information.
  */
 exports.postUpdateProfile = function(req, res, next) {
+  req.assert('name', 'Name cannot be blank').notEmpty();
+  req.assert('email', 'Email is not valid').isEmail();
+  req.assert('email', 'Must use company email').custom(email => {
+    return email.endsWith('sumtotalsystems.com') || email.endsWith('skillsoft.com');
+  });
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/account');
+  }
+
   User.findById(req.user.id, function(err, user) {
+    if (req.body.email.toLowerCase() !== user.email) {
+      User.findOne({ email: req.body.email }, function(err, existingUser) {
+        if (existingUser) {
+          req.flash('errors', { msg: 'Account with that email address already exists.' });
+          return res.redirect('/account');
+        }
+      });    
+    }
     if (err) return next(err);
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
     user.profile.gender = req.body.gender || '';
+    user.profile.mentor = req.body.mentor === 'on' ? true : false;
+    user.profile.skills = req.body.skills || '';
     user.profile.location = req.body.location || '';
-    user.profile.website = req.body.website || '';
-    user.profile.address = req.body.address || '';
 
     user.save(function(err) {
       if (err) return next(err);
@@ -234,26 +266,6 @@ exports.postDeleteAccount = function(req, res, next) {
     req.logout();
     req.flash('info', { msg: 'Your account has been deleted.' });
     res.redirect('/');
-  });
-};
-
-/**
- * GET /account/unlink/:provider
- * Unlink OAuth provider.
- */
-exports.getOauthUnlink = function(req, res, next) {
-  var provider = req.params.provider;
-  User.findById(req.user.id, function(err, user) {
-    if (err) return next(err);
-
-    user[provider] = undefined;
-    user.tokens = _.reject(user.tokens, function(token) { return token.kind === provider; });
-
-    user.save(function(err) {
-      if (err) return next(err);
-      req.flash('info', { msg: provider + ' account has been unlinked.' });
-      res.redirect('/account');
-    });
   });
 };
 

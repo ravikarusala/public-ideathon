@@ -9,6 +9,7 @@ var eventSchema = new mongoose.Schema({
   category: String,
   season: String,
   owners: [String],
+  mentors: [String],
   open: Boolean,
   location: String,
   science: Boolean,

@@ -7,47 +7,38 @@ block content
   form.form-horizontal(action='/account/profile', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
-      label.col-sm-3.control-label(for='email') Email
-      .col-sm-7
-        input.form-control(type='email', name='email', id='email', value='#{user.email}')
-    .form-group
       label.col-sm-3.control-label(for='name') Name
       .col-sm-7
         input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
     .form-group
+      label.col-sm-3.control-label(for='email') Email
+      .col-sm-7
+        input.form-control(type='email', name='email', id='email', value='#{user.email}')
+    .form-group
       label.col-sm-3.control-label(for='gender') Gender
       .col-sm-4
-        label.radio.col-sm-4
-          input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
-          span Male
-        label.radio.col-sm-4
-          input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
-          span Female
-    //- .form-group
-    //-   label.col-sm-3.control-label(for='judge') Judge
-    //-   .col-sm-4
-    //-     label.radio.col-sm-4
-    //-       input(type='radio', checked=user.judge==true, name='judge', value='male', data-toggle='radio', disabled)
-    //-       span Yes
-    //-     label.radio.col-sm-4
-    //-       input(type='radio', checked=user.judge==false, name='judge', value='female', data-toggle='radio', disabled)
-    //-       span No
+        select#gender.form-control(type='radio' name='gender' value=user.profile.gender)
+            option(value='', selected=user.profile.gender==='' disabled) ---
+            option(value='male', selected=user.profile.gender==='male') Male
+            option(value='female', selected=user.profile.gender==='female') Female
+            option(value='other', selected=user.profile.gender==='other') Other / Rather not say
+    .form-group
+      label.col-sm-3.control-label(for='mentor') Mentor
+      .col-sm-4
+        label.radio
+          input(type='checkbox', name='mentor', checked=(user.profile.mentor === true ? "checked" : undefined))
+    .form-group
+      label.col-sm-3.control-label(for='skills') Skills
+      .col-sm-7
+        input(type='text', value=user.profile.skills, data-role='tagsinput', name='skills', id='skills', placeholder='Add skills')
     .form-group
       label.col-sm-3.control-label(for='location') Location
       .col-sm-7
         input.form-control(type='text', name='location', id='location', value='#{user.profile.location}')
-    //- .form-group
-    //-   label.col-sm-3.control-label(for='address') Address (for shipping)
-    //-   .col-sm-7
-    //-     textarea#address.form-control(type='text' name='address' rows=4)=user.profile.address
-    //- .form-group
-    //-   label.col-sm-3.control-label(for='website') Website
-    //-   .col-sm-7
-    //-     input.form-control(type='text', name='website', id='website', value='#{user.profile.website}')
     .form-group
-      label.col-sm-3.control-label(for='gravatar') Gravatar
+      label.col-sm-3.control-label(for='profile') Profile Picture
       .col-sm-4
-        img(src="#{user.gravatar()}", class='profile', width='100', height='100')
+        +profile-picture(user, 'profile')
     .form-group
       .col-sm-offset-3.col-sm-4
         button.btn.btn.btn-primary(type='submit')

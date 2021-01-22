@@ -1,0 +1,28 @@
+.profile {
+  width: 100px;
+  height: 100px;
+}
+
+.bootstrap-tagsinput {
+  width: 100%;
+  border-radius: 0 !important;
+}
+
+.label-info {
+  background-color: #2D1343;
+}
+
+.card {
+  display: inline-block;
+  width: 240px;
+  margin-right: 20px;
+}
+
+.card > .caption {
+  margin: 10px;
+}
+
+.card > .caption > h3 {
+  margin-top: 0;
+}
+

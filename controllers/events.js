@@ -52,8 +52,10 @@ exports.search = function(req, res) {
 
 exports.getEvent = function(req, res) {
   var participantsIds;
+  var mentorsIds;
   Event.findOne({ _id: req.params.id }, function(err, event) {
     participantsIds = event.owners;
+    mentorsIds = event.mentors;
     Category.findOne({_id: event.category}, function(err, category) {
       User.find({_id : {$in :participantsIds}}, function(err, users) {
         var hasJoined = req.user && participantsIds.indexOf(req.user.id) !== -1;
@@ -66,20 +68,19 @@ exports.getEvent = function(req, res) {
           var structuredComments = [];
           for (i = 0; event.comments && i < event.comments.length; i++) {
             var commentContent;
-            var authorName;
-            var authorPicture;
+            var authorObject;
             for (j = 0; j < commenters.length; j++) {
               if (event.comments[i].author === commenters[j]._id.toString()) {
                 commentContent = event.comments[i].comment.content;
-                authorName = commenters[j].profile.name;
-                authorPicture = commenters[j].profile.picture;
+                authorObject = commenters[j];
                 break;
               }
             }
-            structuredComments.push({'authorName' : authorName,
-                                     'authorPicture' : authorPicture,
-                                     'comment' : commentContent
-                                    });
+            structuredComments.push({
+              'authorObject': authorObject,
+              'comment' : commentContent
+            });
+            console.log(authorObject);
           }
           Category.find(function(err, categories) {
             var categoryLookup = {};
@@ -91,10 +92,12 @@ exports.getEvent = function(req, res) {
               for (var i = 0; i < seasons.length; i++) {
                 seasonLookup[seasons[i]._id] = seasons[i].name;
               }
-              res.render('events/event', { md: md, event: event, participants: users, id: req.params.id, category: 'DefaultCategory',
-                joined: hasJoined, comments: structuredComments, categoryLookup: categoryLookup, seasonLookup: seasonLookup});
+              User.find({_id: {$in : mentorsIds}}, function(err, mentors) {
+                var hasJoinedAsMentor = req.user && mentorsIds.indexOf(req.user.id) !== -1;
+                res.render('events/event', { md: md, event: event, participants: users, mentors: mentors, id: req.params.id, category: category.name,
+                  joined: hasJoined, joinedAsMentor: hasJoinedAsMentor, comments: structuredComments, categoryLookup: categoryLookup, seasonLookup: seasonLookup});
+              });
             });
-
           });
         });
       });
@@ -154,6 +157,50 @@ exports.leaveEvent = function(req, res, next) {
       event.save(function(err, entity) {
         if (err) return next(err);
         req.flash('success', { msg: 'Left this hack.' });
+        res.redirect('/events/' + entity._id);
+      });
+    });
+  }
+
+};
+
+exports.joinEventAsMentor = function(req, res, next) {
+  var user = req.user.id;
+  if(!user) {
+    res.render('login');
+  } else {
+    Event.findById(req.body.event, function(err, event) {
+      if (err) {
+        return next(err);
+      }
+      if (event.mentors.indexOf(user) == -1) {
+        event.mentors.push(user);
+      }
+      event.save(function(err, entity) {
+        if (err) return next(err);
+        req.flash('success', { msg: 'Joined this hack as a mentor.' });
+        res.redirect('/events/' + entity._id);
+      });
+    });
+  }
+};
+
+exports.leaveEventAsMentor = function(req, res, next) {
+  var user = req.user.id;
+  if(!user) {
+    res.render('login');
+  } else {
+    Event.findById(req.body.event, function(err, event) {
+      if (err) {
+        return next(err);
+      }
+      var index = event.mentors.indexOf(user);
+      if (index > -1) {
+        event.mentors.splice(index, 1);
+      }
+      event.save(function(err, entity) {
+        if (err) return next(err);
+        req.flash('success', { msg: 'Left this hack as a mentor.' });
         res.redirect('/events/' + entity._id);
       });
     });
