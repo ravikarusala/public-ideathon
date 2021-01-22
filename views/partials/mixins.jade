@@ -1,0 +1,19 @@
+mixin profile-picture(userObj, imgClass)
+  img(
+    class=imgClass
+    src="#{userObj.getPic()}",
+    onerror="this.onerror=null;this.src='#{userObj.gravatar()}'",
+    onload="if (this.naturalWidth === 1) { this.src='#{userObj.gravatar()}' }"
+  )
+
+mixin card(userObj)
+  .card.thumbnail
+    +profile-picture(userObj)
+    .caption
+      h3= userObj.profile.name
+      p
+        b Skills: 
+        span= userObj.profile.skills
+      a(href='https://teams.microsoft.com/l/chat/0/0?users=#{userObj.email}').btn.btn-primary
+        i.fa.fa-comment
+        | Microsoft Teams

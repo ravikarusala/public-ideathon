@@ -31,7 +31,7 @@ var userController = require('./controllers/user');
 var eventsController = require('./controllers/events');
 var adminController = require('./controllers/admin');
 var rulesController = require('./controllers/rules');
-var tshirtController = require('./controllers/tshirt');
+var contactController = require('./controllers/contact');
 var beautifierController = require('./controllers/beautifier');
 
 /**
@@ -80,7 +80,6 @@ app.use(expressValidator());
 app.use(methodOverride());
 app.use(cookieParser());
 app.use(fileUpload());
-//app.set('trust proxy', 1)
 app.use(session({
   resave: true,
   saveUninitialized: true,
@@ -125,7 +124,6 @@ app.get('/account', passportConf.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConf.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
-app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 app.get('/beautifier', beautifierController.getBeautifier);
 app.post('/beautifier', beautifierController.postBeautifier);
 
@@ -142,6 +140,8 @@ app.post('/events/create', passportConf.isAuthenticated, eventsController.postEv
 app.get('/events/my', passportConf.isAuthenticated, eventsController.getMy);
 app.post('/events/join', passportConf.isAuthenticated, eventsController.joinEvent);
 app.post('/events/leave', passportConf.isAuthenticated, eventsController.leaveEvent);
+app.post('/events/joinAsMentor', passportConf.isAuthenticated, eventsController.joinEventAsMentor);
+app.post('/events/leaveAsMentor', passportConf.isAuthenticated, eventsController.leaveEventAsMentor);
 app.get('/events/:id', eventsController.getEvent);
 app.post('/events/comment', passportConf.isAuthenticated, eventsController.postComment);
 app.post('/events/nominate', passportConf.isAuthenticated, eventsController.postNominate);
@@ -172,42 +172,12 @@ app.post('/create-prize/:id', passportConf.isAuthenticated, adminController.post
 
 app.get('/judging', userController.getJudging);
 
+app.get('/mentors', userController.getMentors);
+
 app.get('/users', userController.getAllUsers);
 app.post('/users', passportConf.isAuthenticated, userController.postUser);
 
-// app.get('/contactus', passportConf.isAuthenticated, adminController.getContactUs);
-
-/**
- * tshirt request routes
- */
-app.get('/contactus', tshirtController.getTshirt);
-app.post('/tshirt', passportConf.isAuthenticated, tshirtController.postTshirt);
-app.get('/shipment', passportConf.isAuthenticated, tshirtController.getShipment);
-app.post('/shipment', passportConf.isAuthenticated, tshirtController.markAsDispatched);
-
-/**
- * OAuth authentication routes. (Sign in)
- */
-app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location'] }));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
-});
-app.get('/auth/github', passport.authenticate('github'));
-app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
-});
-app.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
-});
-app.get('/auth/twitter', passport.authenticate('twitter'));
-app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
-});
-app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE' }));
-app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
-});
+app.get('/contact', contactController.getContact);
 
 /**
  * Error Handler.

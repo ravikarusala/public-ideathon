@@ -6,22 +6,14 @@ var userSchema = new mongoose.Schema({
   email: { type: String, unique: true, lowercase: true },
   password: String,
 
-  facebook: String,
-  twitter: String,
-  google: String,
-  github: String,
-  instagram: String,
-  linkedin: String,
-  tokens: Array,
   judge: Boolean,
 
   profile: {
     name: { type: String, default: '' },
     gender: { type: String, default: '' },
+    mentor: { type: Boolean, default: false },
+    skills: { type: String, default: '' },
     location: { type: String, default: '' },
-    address: { type: String, default: ''},
-    website: { type: String, default: '' },
-    picture: { type: String, default: '' }
   },
 
   resetPasswordToken: String,
@@ -58,10 +50,14 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
  * Helper method for getting user's gravatar.
  */
 userSchema.methods.gravatar = function(size) {
-  if (!size) size = 200;
-  if (!this.email) return 'https://gravatar.com/avatar/?s=' + size + '&d=retro';
+  if (!size) size = 240;
   var md5 = crypto.createHash('md5').update(this.email).digest('hex');
   return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
+};
+
+userSchema.methods.getPic = function() {
+  const pic = `https://outlook.office.com/owa/service.svc/s/GetPersonaPhoto?email=${this.email}&UA=0&size=HR240x240`;
+  return pic;
 };
 
 module.exports = mongoose.model('User', userSchema);
