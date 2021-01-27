@@ -204,7 +204,7 @@ exports.postUpdateProfile = function(req, res, next) {
   }
 
   User.findById(req.user.id, function(err, user) {
-    if (req.body.email.toLowerCase() !== user.email) {
+    if (req.body.email.toLowerCase() !== user.email.toLowerCase()) {
       User.findOne({ email: req.body.email }, function(err, existingUser) {
         if (existingUser) {
           req.flash('errors', { msg: 'Account with that email address already exists.' });

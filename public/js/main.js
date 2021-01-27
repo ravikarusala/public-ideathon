@@ -11,4 +11,4 @@ function printDiv(divName) {
 
 function updateFileInput(val) {
     document.getElementById('pictureURL').innerHTML = val.substr(12);
-  }
+}

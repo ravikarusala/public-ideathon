@@ -14,6 +14,6 @@ mixin card(userObj)
       p
         b Skills: 
         span= userObj.profile.skills
-      a(href='https://teams.microsoft.com/l/chat/0/0?users=#{userObj.email}').btn.btn-primary
+      a(href='https://teams.microsoft.com/l/chat/0/0?users=#{userObj.getRecasedEmailAddress()}').btn.btn-primary
         i.fa.fa-comment
         | Microsoft Teams

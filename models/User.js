@@ -3,7 +3,7 @@ var crypto = require('crypto');
 var mongoose = require('mongoose');
 
 var userSchema = new mongoose.Schema({
-  email: { type: String, unique: true, lowercase: true },
+  email: { type: String, unique: true },
   password: String,
 
   judge: Boolean,
@@ -51,13 +51,18 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
  */
 userSchema.methods.gravatar = function(size) {
   if (!size) size = 240;
-  var md5 = crypto.createHash('md5').update(this.email).digest('hex');
+  var md5 = crypto.createHash('md5').update(this.profile.name).digest('hex');
   return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
 };
 
 userSchema.methods.getPic = function() {
   const pic = `https://outlook.office.com/owa/service.svc/s/GetPersonaPhoto?email=${this.email}&UA=0&size=HR240x240`;
   return pic;
+};
+
+userSchema.methods.getRecasedEmailAddress = function() {
+  return this.email.split("@")[0].split(".").map(str => str.charAt(0).toUpperCase() + str.slice(1)).join(".") 
+    + '@' + this.email.split("@")[1];
 };
 
 module.exports = mongoose.model('User', userSchema);
